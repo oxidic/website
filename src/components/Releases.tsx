@@ -16,7 +16,7 @@ export default function Releases({ amount }: Props) {
   return (
     <select className="min-w-max px-4 py-2">
       {slicedReleases.map(release => (
-        <option key={release.id} value={release.name}></option>
+        <option label={release.name} key={release.id} value={release.name}></option>
       ))}
     </select>
   )
