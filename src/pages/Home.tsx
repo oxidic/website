@@ -1,5 +1,5 @@
 import { FaGithub } from "react-icons/fa"
-import { marked, setOptions } from "marked"
+import { marked } from "marked"
 import { useEffect, useState } from "react"
 import highlight from "highlight.js"
 
@@ -13,18 +13,13 @@ export default function Home() {
 
   useEffect(() => {
     const fetchReadme = async () => {
-      setOptions({
-        extensions: {
-          childTokens: {},
-          renderers: {
-            highlight: code => highlight.highlight(code.raw, { language: "rust" }).value,
-          },
-        },
-      })
-
       const response = await fetch(README_URL)
       const text = await response.text()
-      setReadme(await marked(text))
+      setReadme(
+        marked(text, {
+          highlight: code => highlight.highlight(code, { language: "rust" }).value,
+        }),
+      )
     }
 
     fetchReadme()
