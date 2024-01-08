@@ -2,6 +2,7 @@ import { createRoot } from "react-dom/client"
 import { StrictMode } from "react"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import "highlight.js/styles/atom-one-dark.css"
 
 import "./styles/index.css"
 import { routes } from "./pages"

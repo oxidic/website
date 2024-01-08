@@ -1,7 +1,11 @@
+/* eslint-disable no-undef */
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
-  plugins: [],
+  daisyui: {
+    themes: ["halloween"],
+  },
+  plugins: [require("daisyui"), require("@tailwindcss/typography")],
   theme: {
     extend: {
       colors: {
