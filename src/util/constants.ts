@@ -8,4 +8,4 @@ export const NOT_IMPLEMENTED_TEXT =
 
 export const VERSIONS_API = "https://api.github.com/repos/oxidic/oxido/releases" as const
 
-export const README_URL = "https://raw.githubusercontent.com/oxidite/oxido/main/README.md" as const
+export const README_URL = "https://raw.githubusercontent.com/oxidic/oxido/main/README.md" as const
