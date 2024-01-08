@@ -14,6 +14,9 @@ export default function Play() {
 
     monaco.editor.defineTheme("pink-candy-dark", pinkCandyDark)
     setIsThemeLoaded(true)
+
+    if (typeof document === "undefined") return
+    document.title = "Playground | Oxido"
   }, [monaco])
 
   const handleEditorChange = (value?: string) => {
