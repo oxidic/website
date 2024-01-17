@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react"
 import ControlledEditor, { useMonaco } from "@monaco-editor/react"
-import { useDebounce, useLocalStorage } from "@uidotdev/usehooks"
+import { useDebounce, useDocumentTitle, useLocalStorage } from "@uidotdev/usehooks"
+import { useEffect, useState } from "react"
 
 import { DEFAULT_CONTENT, NOT_IMPLEMENTED_TEXT, PLAYGROUND_DEBOUNCE_MS, pinkCandyDark } from "../util"
 import Releases from "../components/Releases"
@@ -12,14 +12,13 @@ export default function Play() {
   const [isThemeLoaded, setIsThemeLoaded] = useState(false)
   const monaco = useMonaco()
 
+  useDocumentTitle("Oxido | Playground")
+
   useEffect(() => {
     if (!monaco) return
 
     monaco.editor.defineTheme("pink-candy-dark", pinkCandyDark)
     setIsThemeLoaded(true)
-
-    if (typeof document === "undefined") return
-    document.title = "Playground | Oxido"
   }, [monaco])
 
   setPlaygroundHistory(debouncedContent)

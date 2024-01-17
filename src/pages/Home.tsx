@@ -1,15 +1,18 @@
-import { FaGithub } from "react-icons/fa"
-import { marked } from "marked"
-import { useEffect, useState } from "react"
+import { useDocumentTitle } from "@uidotdev/usehooks"
 import highlight from "highlight.js"
+import { marked } from "marked"
+import { FaGithub } from "react-icons/fa"
+import { Link } from "react-router-dom"
+import { useEffect, useState } from "react"
 
 import { README_URL } from "../util"
-import { Link } from "react-router-dom"
 
 export default function Home() {
   const [readme, setReadme] = useState("")
 
   const scroll = () => document.getElementById("readme")?.scrollIntoView({ behavior: "smooth" })
+
+  useDocumentTitle("Oxido")
 
   useEffect(() => {
     const fetchReadme = async () => {
