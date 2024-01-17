@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.15.5",
+    "@uidotdev/usehooks": "^2.4.1",
     "marked": "^4.0.17",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

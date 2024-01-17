@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react"
 import ControlledEditor, { useMonaco } from "@monaco-editor/react"
+import { useDebounce, useLocalStorage } from "@uidotdev/usehooks"
 
-import { DEFAULT_CONTENT, NOT_IMPLEMENTED_TEXT, pinkCandyDark } from "../util"
+import { DEFAULT_CONTENT, NOT_IMPLEMENTED_TEXT, PLAYGROUND_DEBOUNCE_MS, pinkCandyDark } from "../util"
 import Releases from "../components/Releases"
 
 export default function Play() {
-  const [content, setContent] = useState<string>(DEFAULT_CONTENT)
+  const [playgroundHistory, setPlaygroundHistory] = useLocalStorage<string>("playgroundHistory", DEFAULT_CONTENT)
+  const [content, setContent] = useState(playgroundHistory)
+  const debouncedContent = useDebounce(content, PLAYGROUND_DEBOUNCE_MS)
   const [isThemeLoaded, setIsThemeLoaded] = useState(false)
   const monaco = useMonaco()
 
@@ -19,10 +22,7 @@ export default function Play() {
     document.title = "Playground | Oxido"
   }, [monaco])
 
-  const handleEditorChange = (value?: string) => {
-    console.log(value)
-    setContent(value ?? DEFAULT_CONTENT)
-  }
+  setPlaygroundHistory(debouncedContent)
 
   const handleRun = () => {
     alert([NOT_IMPLEMENTED_TEXT, content].join("\n\n"))
@@ -39,7 +39,7 @@ export default function Play() {
       <ControlledEditor
         height="95vh"
         language="rust"
-        onChange={handleEditorChange}
+        onChange={value => setContent(value ?? playgroundHistory)}
         theme={isThemeLoaded ? "pink-candy-dark" : "vs-dark"}
         value={content}
         width="100vw"
