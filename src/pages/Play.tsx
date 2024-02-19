@@ -1,31 +1,31 @@
-import ControlledEditor, { useMonaco } from "@monaco-editor/react"
-import { useDebounce, useDocumentTitle, useLocalStorage } from "@uidotdev/usehooks"
-import { useEffect, useState } from "react"
+import ControlledEditor, { useMonaco } from "@monaco-editor/react";
+import { useDebounce, useDocumentTitle, useLocalStorage } from "@uidotdev/usehooks";
+import { useEffect, useState } from "react";
 
-import { DEFAULT_CONTENT, NOT_IMPLEMENTED_TEXT, PLAYGROUND_DEBOUNCE_MS, pinkCandyDark } from "../util"
-import Releases from "../components/Releases"
+import { DEFAULT_CONTENT, NOT_IMPLEMENTED_TEXT, PLAYGROUND_DEBOUNCE_MS, pinkCandyDark } from "../util";
+import Releases from "../components/Releases";
 
 export default function Play() {
-  const [playgroundHistory, setPlaygroundHistory] = useLocalStorage<string>("playgroundHistory", DEFAULT_CONTENT)
-  const [content, setContent] = useState(playgroundHistory)
-  const debouncedContent = useDebounce(content, PLAYGROUND_DEBOUNCE_MS)
-  const [isThemeLoaded, setIsThemeLoaded] = useState(false)
-  const monaco = useMonaco()
+  const [playgroundHistory, setPlaygroundHistory] = useLocalStorage<string>("playgroundHistory", DEFAULT_CONTENT);
+  const [content, setContent] = useState(playgroundHistory);
+  const debouncedContent = useDebounce(content, PLAYGROUND_DEBOUNCE_MS);
+  const [isThemeLoaded, setIsThemeLoaded] = useState(false);
+  const monaco = useMonaco();
 
-  useDocumentTitle("Oxido | Playground")
+  useDocumentTitle("Oxido | Playground");
 
   useEffect(() => {
-    if (!monaco) return
+    if (!monaco) return;
 
-    monaco.editor.defineTheme("pink-candy-dark", pinkCandyDark)
-    setIsThemeLoaded(true)
-  }, [monaco])
+    monaco.editor.defineTheme("pink-candy-dark", pinkCandyDark);
+    setIsThemeLoaded(true);
+  }, [monaco]);
 
-  setPlaygroundHistory(debouncedContent)
+  setPlaygroundHistory(debouncedContent);
 
   const handleRun = () => {
-    alert([NOT_IMPLEMENTED_TEXT, content].join("\n\n"))
-  }
+    alert([NOT_IMPLEMENTED_TEXT, content].join("\n\n"));
+  };
 
   return (
     <>
@@ -44,5 +44,5 @@ export default function Play() {
         width="100vw"
       />
     </>
-  )
+  );
 }

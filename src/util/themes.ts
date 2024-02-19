@@ -1,4 +1,4 @@
-import { editor } from "monaco-editor"
+import { editor } from "monaco-editor";
 
 export const pinkCandyDark: editor.IStandaloneThemeData = {
   base: "vs-dark",
@@ -517,4 +517,4 @@ export const pinkCandyDark: editor.IStandaloneThemeData = {
     foreground: "#ABB2BF",
   },
   rules: [],
-}
+};

@@ -1,32 +1,32 @@
-import { useDocumentTitle } from "@uidotdev/usehooks"
-import highlight from "highlight.js"
-import { marked } from "marked"
-import { FaGithub } from "react-icons/fa"
-import { Link } from "react-router-dom"
-import { useEffect, useState } from "react"
+import { useDocumentTitle } from "@uidotdev/usehooks";
+import highlight from "highlight.js";
+import { marked } from "marked";
+import { FaGithub } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-import { README_URL } from "../util"
+import { README_URL } from "../util";
 
 export default function Home() {
-  const [readme, setReadme] = useState("")
+  const [readme, setReadme] = useState("");
 
-  const scroll = () => document.getElementById("readme")?.scrollIntoView({ behavior: "smooth" })
+  const scroll = () => document.getElementById("readme")?.scrollIntoView({ behavior: "smooth" });
 
-  useDocumentTitle("Oxido")
+  useDocumentTitle("Oxido");
 
   useEffect(() => {
     const fetchReadme = async () => {
-      const response = await fetch(README_URL)
-      const text = await response.text()
+      const response = await fetch(README_URL);
+      const text = await response.text();
       setReadme(
         marked(text, {
           highlight: code => highlight.highlight(code, { language: "rust" }).value,
         }),
-      )
-    }
+      );
+    };
 
-    fetchReadme()
-  })
+    fetchReadme();
+  });
 
   return (
     <main className="scroll-smooth">
@@ -65,5 +65,5 @@ export default function Home() {
         id="readme"
       ></div>
     </main>
-  )
+  );
 }
