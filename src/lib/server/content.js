@@ -14,10 +14,10 @@ async function readFile(path) {
  */
 export async function get_exercise(slug) {
 
-	const dir = `content/tutorial${slug}`;
-
+	const dir = `content/tutorial/${slug}`;
 
 	const text = await readFile(`${dir}/README.md`);
+	console.log(`https://raw.githubusercontent.com/oxidic/website/main/${dir}/meta.json`);
 	const meta = JSON.parse(await readFile(`${dir}/meta.json`));
 	const { frontmatter, markdown } = extract_frontmatter(text, dir);
 	const { title, path = '/', focus } = frontmatter;
