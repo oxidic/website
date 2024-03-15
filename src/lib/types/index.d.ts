@@ -28,16 +28,11 @@ export interface Scope {
 }
 
 export interface Exercise {
-	part: {
-		slug: string;
-		title: string;
-		label: string;
-	};
 	focus: string;
 	title: string;
-	/** the initial path to navigate to */
-	path: string;
+	label: string;
 	slug: string;
+	path: string;
 	prev: { slug: string } | null;
 	next: { slug: string; title: string } | null;
 	markdown: string;

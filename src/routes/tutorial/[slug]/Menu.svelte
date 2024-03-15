@@ -14,7 +14,7 @@
 
 	let is_open = false;
 
-	$: expanded_part = current.part.slug;
+	$: expanded_part = current.slug;
 </script>
 
 <div class="container">
@@ -35,13 +35,13 @@
 					<div class="heading-row">
 						<span class="part-title">Guide</span>
 						<span class="separator">/</span>
-						<span class="chapter-title">{current.part.label}</span>
+						<span class="chapter-title">{current.label}</span>
 					</div>
 				</div>
 
 				<div class="desktop">
-					<span class="part-title">{current.part.title}</span><span class="separator">/</span>
-					<span class="separator">/</span><strong>{current.title}</strong>
+					<span class="part-title">Guide</span><span class="separator">/</span>
+					<strong>{current.title}</strong>
 				</div>
 
 				<span style="flex: 1 1 auto" />
@@ -62,7 +62,7 @@
 								<li
 									class="part"
 									class:expanded={part.slug === expanded_part}
-									aria-current={part.slug === current.part.slug ? 'step' : undefined}
+									aria-current={part.slug === current.slug ? 'step' : undefined}
 									transition:slide={{ duration }}
 								>
 									<button
@@ -72,7 +72,7 @@
 											}
 										}}
 									>
-										Part {i + 1}: {part.title}
+										{part.title}
 									</button>
 
 									{#if part.slug === expanded_part}
@@ -81,7 +81,7 @@
 												<li
 													class="chapter"
 													class:expanded={chapter.slug === expanded_part}
-													aria-current={chapter.slug === current.part.slug ? 'step' : undefined}
+													aria-current={chapter.slug === current.slug ? 'step' : undefined}
 												>
 													<button
 														on:click|stopPropagation={() => (expanded_part = chapter.slug)}
@@ -126,7 +126,7 @@
 
 		<a
 			class="next-button"
-			href={current.next ? `/tutorial/${current.part.slug}` : undefined}
+			href={current.next ? `/tutorial/${current.next.slug}` : undefined}
 			aria-label="Next"
 		>
 			<Icon name="arrow-right" size={16} />

@@ -1,6 +1,10 @@
 {
     "title": "Introduction",
     "focus": "/src/lib/App.oxi",
+    "path": "welcome-to-oxido",
     "prev": "",
-    "next": "installing-oxido"
+    "next": {
+        "title": "Installation",
+        "slug": "installing-oxido"
+    }
 }
