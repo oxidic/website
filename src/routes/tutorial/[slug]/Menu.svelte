@@ -15,11 +15,9 @@
 	let is_open = false;
 
 	$: expanded_part = current.part.slug;
-	$: expanded_chapter = current.chapter.slug;
 </script>
 
-<div
-	class="container">
+<div class="container">
 	<header>
 		<a
 			class="prev-button"
@@ -28,27 +26,22 @@
 		>
 			<Icon name="arrow-left" size={16} />
 		</a>
-
-		<button
-			class="heading"
-			class:open={is_open}
-		>
+		<button class="heading" class:open={is_open}>
 			<h1>
 				<div class="mobile">
 					<div class="heading-row">
 						<strong>{current.title}</strong>
 					</div>
 					<div class="heading-row">
-						<span class="part-title">{current.part.label}</span>
+						<span class="part-title">Guide</span>
 						<span class="separator">/</span>
-						<span class="chapter-title">{current.chapter.title}</span>
+						<span class="chapter-title">{current.part.label}</span>
 					</div>
 				</div>
 
 				<div class="desktop">
 					<span class="part-title">{current.part.title}</span><span class="separator">/</span>
-					<span class="chapter-title">{current.chapter.title}</span><span class="separator">/</span
-					><strong>{current.title}</strong>
+					<span class="separator">/</span><strong>{current.title}</strong>
 				</div>
 
 				<span style="flex: 1 1 auto" />
@@ -76,7 +69,6 @@
 										on:click|stopPropagation={() => {
 											if (expanded_part !== part.slug) {
 												expanded_part = part.slug;
-												expanded_chapter = part.chapters[0].slug;
 											}
 										}}
 									>
@@ -88,11 +80,11 @@
 											{#each part.chapters as chapter (chapter.slug)}
 												<li
 													class="chapter"
-													class:expanded={chapter.slug === expanded_chapter}
-													aria-current={chapter.slug === current.chapter.slug ? 'step' : undefined}
+													class:expanded={chapter.slug === expanded_part}
+													aria-current={chapter.slug === current.part.slug ? 'step' : undefined}
 												>
 													<button
-														on:click|stopPropagation={() => (expanded_chapter = chapter.slug)}
+														on:click|stopPropagation={() => (expanded_part = chapter.slug)}
 														style="width: 100%; text-align: start;"
 													>
 														<!-- <img src={arrow} alt="Arrow icon" /> -->
@@ -100,7 +92,7 @@
 														{chapter.title}
 													</button>
 
-													{#if chapter.slug === expanded_chapter}
+													{#if chapter.slug === expanded_part}
 														<ul transition:slide={{ duration }}>
 															{#each chapter.exercises as exercise (exercise.slug)}
 																<li
@@ -134,7 +126,7 @@
 
 		<a
 			class="next-button"
-			href={current.next ? `/tutorial/${current.next.slug}` : undefined}
+			href={current.next ? `/tutorial/${current.part.slug}` : undefined}
 			aria-label="Next"
 		>
 			<Icon name="arrow-right" size={16} />

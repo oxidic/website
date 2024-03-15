@@ -29,6 +29,8 @@ export async function get_exercise(slug) {
 			label: meta.title
 		},
 		focus: focus ?? meta.focus,
+		next: meta.next,
+		pev: meta.previous,
 		title,
 		path,
 		slug,

@@ -1,4 +1,6 @@
 {
     "title": "Introduction",
-    "focus": "/src/lib/App.oxi"
+    "focus": "/src/lib/App.oxi",
+    "prev": "",
+    "next": "installing-oxido"
 }
