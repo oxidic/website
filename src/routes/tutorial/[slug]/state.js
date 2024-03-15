@@ -18,15 +18,6 @@ import { derived, writable } from 'svelte/store';
  * }} CompilerWarning
  */
 
-"title": "Introduction",
-"focus": "/src/lib/App.oxi",
-"path": "welcome-to-oxido",
-"prev": "",
-"next": {
-	"title": "Installation",
-	"slug": "installing-oxido"
-}
-}
 /** @type {Writable<import('$lib/types').Stub[]>} */
 export const files = writable([]);
 
