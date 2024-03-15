@@ -28,11 +28,6 @@ export interface Scope {
 }
 
 export interface Exercise {
-	part: {
-		slug: string;
-		title: string;
-		label: string;
-	}
 	focus: string;
 	title: string;
 	label: string;
