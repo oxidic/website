@@ -22,7 +22,7 @@
 				Oxido is a statically typed interpreted programming language for making CLI tools and
 				scripts.
 			</p>
-			<a class="btn btn-primary" href="/guide">Install</a>
+			<a class="btn btn-primary" href="/tutorial">Install</a>
             <a class="btn btn-accent" href="/docs">Documentation</a>
 		</div>
 	</div>
