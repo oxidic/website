@@ -31,18 +31,6 @@
 		add: async (name, type) => {
 			const expected = $solution[name];
 
-			if (expected && type !== expected.type) {
-				modal_text = `${name.slice(exercise.scope.prefix.length)} should be a ${expected.type}, not a ${type}!`;
-				return;
-			}
-
-			if (!expected && !exercise.editing_constraints.create.has(name)) {
-				modal_text =
-					'Only the following files and folders are allowed to be created in this exercise:\n' +
-					Array.from(exercise.editing_constraints.create).join('\n');
-				return;
-			}
-
 			const existing = $files.find((file) => file.name === name);
 			if (existing) {
 				modal_text = `A ${existing.type} already exists with this name`;
@@ -71,20 +59,6 @@
 				return;
 			}
 
-			if (!$solution[new_full_name] && !exercise.editing_constraints.create.has(new_full_name)) {
-				modal_text =
-					'Only the following files and folders are allowed to be created in this exercise:\n' +
-					Array.from(exercise.editing_constraints.create).join('\n');
-				return;
-			}
-
-			if ($solution[to_rename.name] && !exercise.editing_constraints.remove.has(to_rename.name)) {
-				modal_text =
-					'Only the following files and folders are allowed to be removed in this exercise:\n' +
-					Array.from(exercise.editing_constraints.remove).join('\n');
-				return;
-			}
-
 			if (to_rename.type === 'directory') {
 				for (const file of $files) {
 					if (file.name.startsWith(to_rename.name + '/')) {
@@ -106,13 +80,6 @@
 		},
 
 		remove: async (file) => {
-			if ($solution[file.name] && !exercise.editing_constraints.remove.has(file.name)) {
-				modal_text =
-					'Only the following files and folders are allowed to be deleted in this tutorial chapter:\n' +
-					Array.from(exercise.editing_constraints.remove).join('\n');
-				return;
-			}
-
 			dispatch('select', { name: null });
 
 			reset_files(
@@ -131,7 +98,6 @@
 
 	/** @param {import('$lib/types').Stub} file */
 	function is_deleted(file) {
-		if (file.type === 'directory') return `${file.name}/__delete` in exercise.a;
 		if (file.text) return file.contents.startsWith('__delete');
 
 		return false;

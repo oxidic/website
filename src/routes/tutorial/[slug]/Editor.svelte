@@ -42,8 +42,6 @@
 
 	$: select_state($selected_name);
 
-	let installed_vim = false;
-
 	/** @param {import('$lib/types').Stub[]} $files */
 	async function reset($files) {
 		if (skip_reset) return;

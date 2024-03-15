@@ -35,7 +35,7 @@
 					<div class="heading-row">
 						<span class="part-title">Guide</span>
 						<span class="separator">/</span>
-						<span class="chapter-title">{current.label}</span>
+						<span class="chapter-title">{current.title}</span>
 					</div>
 				</div>
 

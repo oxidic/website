@@ -18,6 +18,15 @@ import { derived, writable } from 'svelte/store';
  * }} CompilerWarning
  */
 
+"title": "Introduction",
+"focus": "/src/lib/App.oxi",
+"path": "welcome-to-oxido",
+"prev": "",
+"next": {
+	"title": "Installation",
+	"slug": "installing-oxido"
+}
+}
 /** @type {Writable<import('$lib/types').Stub[]>} */
 export const files = writable([]);
 
@@ -59,39 +68,4 @@ export function reset_files(new_files) {
 	});
 
 	files.set(new_files);
-}
-
-/**
- * @param {string} name
- * @param {import('$lib/types').Stub[]} files
- */
-export function create_directories(name, files) {
-	const existing = new Set();
-
-	for (const file of files) {
-		if (file.type === 'directory') {
-			existing.add(file.name);
-		}
-	}
-
-	/** @type {import('$lib/types').DirectoryStub[]} */
-	const directories = [];
-
-	const parts = name.split('/');
-	while (parts.length) {
-		parts.pop();
-
-		const dir = parts.join('/');
-		if (existing.has(dir)) {
-			break;
-		}
-
-		directories.push({
-			type: 'directory',
-			name: dir,
-			basename: /** @type {string} */ (parts.at(-1))
-		});
-	}
-
-	return directories;
 }
