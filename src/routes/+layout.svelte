@@ -4,7 +4,7 @@
 
 <div class="navbar bg-base-100 shadow-lg">
 	<div class="flex-1">
-		<a class="btn btn-ghost text-xl" href="/">daisyUI</a>
+		<a class="btn btn-ghost text-xl" href="/">Oxido</a>
 	</div>
 	<div class="flex-none">
 		<a class="btn btn-square btn-ghost btn-sm mx-1" href="https://github.com/oxidic">

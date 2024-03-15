@@ -1,22 +1,9 @@
 <script>
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { SplitPane } from '@rich_harris/svelte-split-pane';
-	import { Icon } from '@sveltejs/site-kit/components';
 	import Editor from './Editor.svelte';
-	import ContextMenu from './filetree/ContextMenu.svelte';
-	import Filetree from './filetree/Filetree.svelte';
-	import ImageViewer from './ImageViewer.svelte';
 	import ScreenToggle from './ScreenToggle.svelte';
 	import Sidebar from './Sidebar.svelte';
-	import {
-		create_directories,
-		creating,
-		files,
-		reset_files,
-		selected_file,
-		selected_name,
-		solution
-	} from './state.js';
 
 	export let data;
 
@@ -30,90 +17,15 @@
 	let previous_files = [];
 
 	$: mobile = w < 800; // for the things we can't do with media queries
-	$: selected_name.set(data.exercise.focus);
-
-	beforeNavigate(() => {
-		previous_files = $files;
-	});
 
 	afterNavigate(async () => {
 		w = window.innerWidth;
-
-		if (data.exercise.path !== path) paused = true;
-
-		path = data.exercise.path;
-		paused = false;
 	});
-
-	/**
-	 * @param {import('$lib/types').Stub[]} files
-	 * @param {Record<string, import('$lib/types').Stub> | null} solution
-	 */
-	function is_completed(files, solution) {
-		if (!solution) return true;
-
-		for (const file of files) {
-			if (file.type === 'file') {
-				const expected = solution[file.name];
-				if (expected?.type !== 'file') return false;
-				if (normalise(file.contents) !== normalise(expected.contents)) return false;
-			}
-		}
-
-		const names = new Set(files.map((stub) => stub.name));
-
-		for (const name in solution) {
-			if (!names.has(name)) return false;
-		}
-
-		return true;
-	}
 
 	/** @param {string} code */
 	function normalise(code) {
 		// TODO think about more sophisticated normalisation (e.g. truncate multiple newlines)
 		return code.replace(/\s+/g, ' ').trim();
-	}
-
-	/** @param {string | null} name */
-	function select_file(name) {
-		const file = name && $files.find((file) => file.name === name);
-
-		if (!file && name) {
-			// trigger file creation input. first, create any intermediate directories
-			const new_directories = create_directories(name, $files);
-
-			if (new_directories.length > 0) {
-				reset_files([...$files, ...new_directories]);
-			}
-
-			// find the parent directory
-			const parent = name.split('/').slice(0, -1).join('/');
-
-			creating.set({
-				parent,
-				type: 'file'
-			});
-
-			show_filetree = true;
-		} else {
-			show_filetree = false;
-			selected_name.set(name);
-		}
-
-		show_editor = true;
-	}
-
-	/** @param {string} name */
-	function navigate_to_file(name) {
-		if (name === $selected_name) return;
-
-		select_file(name);
-
-		if (mobile) {
-			const q = new URLSearchParams({ file: $selected_name || '' });
-			history.pushState({}, '', `?${q}`);
-		}
 	}
 
 	/** @type {HTMLElement} */
@@ -146,16 +58,9 @@
 		const q = new URLSearchParams(location.search);
 		const file = q.get('file');
 
-		if (file) {
-			show_editor = true;
-			select_file(file || null); // empty string === null
-		} else {
-			show_editor = false;
-		}
+		show_editor = true;
 	}}
 />
-
-<ContextMenu />
 
 <div class="container" class:mobile>
 	<div class="top" class:offset={show_editor}>
@@ -165,9 +70,6 @@
 					bind:sidebar
 					index={data.index}
 					exercise={data.exercise}
-					on:select={(e) => {
-						navigate_to_file(e.detail.file);
-					}}
 				/>
 			</section>
 
@@ -183,19 +85,7 @@
 						>
 							<section class="editor-container" slot="b">
 								<Editor />
-								<ImageViewer selected={$selected_file} />
 
-								{#if mobile && show_filetree}
-									<div class="mobile-filetree">
-										<Filetree
-											mobile
-											exercise={data.exercise}
-											on:select={(e) => {
-												navigate_to_file(e.detail.name);
-											}}
-										/>
-									</div>
-								{/if}
 							</section>
 						</SplitPane>
 					</section>
@@ -216,7 +106,7 @@
 				const url = new URL(location.origin + location.pathname);
 
 				if (show_editor) {
-					url.searchParams.set('file', $selected_name ?? '');
+					url.searchParams.set('file', '');
 				}
 
 				history.pushState({}, '', url);

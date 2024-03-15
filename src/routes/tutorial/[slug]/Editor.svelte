@@ -13,7 +13,6 @@
 	import { onMount, tick } from 'svelte';
 	import { autocomplete_for_rust } from './autocompletion.js';
 	import './codemirror.css';
-	import { files, selected_file, selected_name, update_file } from './state.js';
 
 	/** @type {HTMLDivElement} */
 	let container;
@@ -38,10 +37,6 @@
 		svelteTheme
 	];
 
-	$: reset($files);
-
-	$: select_state($selected_name);
-
 	/** @param {import('$lib/types').Stub[]} $files */
 	async function reset($files) {
 		if (skip_reset) return;
@@ -65,10 +60,6 @@
 
 					editor_states.set(file.name, transaction.state);
 					state = transaction.state;
-
-					if ($selected_name === file.name) {
-						editor_view.setState(state);
-					}
 				}
 			} else {
 				let lang;
@@ -106,22 +97,6 @@
 			parent: container,
 			async dispatch(transaction) {
 				editor_view.update([transaction]);
-
-				if (transaction.docChanged && $selected_file) {
-					skip_reset = true;
-
-					// TODO do we even need to update `$files`? maintaining separate editor states is probably sufficient
-					update_file({
-						...$selected_file,
-						contents: editor_view.state.doc.toString()
-					});
-
-					// keep `editor_states` updated so that undo/redo history is preserved for files independently
-					editor_states.set($selected_file.name, editor_view.state);
-
-					await tick();
-					skip_reset = false;
-				}
 			}
 		});
 
@@ -138,12 +113,6 @@
 		skip_reset = false;
 
 		editor_states.clear();
-		await reset($files);
-
-		if (editor_view) {
-			// could be false if onMount returned early
-			select_state($selected_name);
-		}
 	});
 </script>
 
@@ -176,20 +145,6 @@
 		}, 200);
 	}}
 >
-	{#if !browser && $selected_file}
-		<div class="fake">
-			<div class="fake-gutter">
-				{#each $selected_file.contents.split('\n') as _, i}
-					<div class="fake-line">{i + 1}</div>
-				{/each}
-			</div>
-			<div class="fake-content">
-				{#each $selected_file.contents.split('\n') as line}
-					<pre>{line || ' '}</pre>
-				{/each}
-			</div>
-		</div>
-	{/if}
 </div>
 
 <style>
