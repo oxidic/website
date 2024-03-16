@@ -17,7 +17,7 @@ export async function get_exercise(slug) {
 	const dir = `content/tutorial/${slug}`;
 
 	const text = await readFile(`${dir}/README.md`);
-	console.log(`https://raw.githubusercontent.com/oxidic/website/main/${dir}/meta.json`);
+	const code = await readFile(`${dir}/code.oxi`);
 	const meta = JSON.parse(await readFile(`${dir}/meta.json`));
 	const { frontmatter, markdown } = extract_frontmatter(text, dir);
 	const { title, path = '/', focus } = frontmatter;
@@ -31,6 +31,7 @@ export async function get_exercise(slug) {
 		focus: focus ?? meta.focus,
 		next: meta.next,
 		pev: meta.previous,
+		code,
 		title,
 		path,
 		slug,

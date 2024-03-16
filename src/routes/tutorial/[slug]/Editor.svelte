@@ -1,17 +1,12 @@
 <script>
-	import { browser } from '$app/environment';
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import { acceptCompletion } from '@codemirror/autocomplete';
 	import { indentWithTab } from '@codemirror/commands';
-	import { rust } from '@codemirror/lang-rust';
 	import { indentUnit } from '@codemirror/language';
-	import { setDiagnostics } from '@codemirror/lint';
 	import { EditorState } from '@codemirror/state';
 	import { EditorView, keymap } from '@codemirror/view';
-	import { svelteTheme } from '@sveltejs/repl/theme';
 	import { basicSetup } from 'codemirror';
 	import { onMount, tick } from 'svelte';
-	import { autocomplete_for_rust } from './autocompletion.js';
 	import './codemirror.css';
 
 	/** @type {HTMLDivElement} */
@@ -29,72 +24,20 @@
 	/** @type {import('@codemirror/view').EditorView} */
 	let editor_view;
 
+	/** @type {string} */
+	export let code;
+
 	const extensions = [
 		basicSetup,
 		EditorState.tabSize.of(2),
 		keymap.of([{ key: 'Tab', run: acceptCompletion }, indentWithTab]),
 		indentUnit.of('\t'),
-		svelteTheme
 	];
-
-	/** @param {import('$lib/types').Stub[]} $files */
-	async function reset($files) {
-		if (skip_reset) return;
-
-		for (const file of $files) {
-			if (file.type !== 'file') continue;
-
-			let state = editor_states.get(file.name);
-
-			if (state) {
-				const existing = state.doc.toString();
-
-				if (file.contents !== existing) {
-					const transaction = state.update({
-						changes: {
-							from: 0,
-							to: existing.length,
-							insert: file.contents
-						}
-					});
-
-					editor_states.set(file.name, transaction.state);
-					state = transaction.state;
-				}
-			} else {
-				let lang;
-
-				if (file.name.endsWith('.oxi')) {
-					lang = [rust(), ...autocomplete_for_rust()];
-				}
-
-				state = EditorState.create({
-					doc: file.contents,
-					extensions: lang ? [...extensions, ...lang] : extensions
-				});
-
-				editor_states.set(file.name, state);
-			}
-		}
-	}
-
-	/** @param {string | null} $selected_name */
-	function select_state($selected_name) {
-		if (skip_reset) return;
-
-		const state =
-			($selected_name && editor_states.get($selected_name)) ||
-			EditorState.create({
-				doc: '',
-				extensions: [EditorState.readOnly.of(true)]
-			});
-
-		editor_view.setState(state);
-	}
 
 	onMount(() => {
 		editor_view = new EditorView({
 			parent: container,
+			doc: code,
 			async dispatch(transaction) {
 				editor_view.update([transaction]);
 			}

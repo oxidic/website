@@ -66,32 +66,18 @@
 	<div class="top" class:offset={show_editor}>
 		<SplitPane id="main" type="horizontal" min="360px" max="50%" pos="33%">
 			<section slot="a" class="content">
-				<Sidebar
-					bind:sidebar
-					index={data.index}
-					exercise={data.exercise}
-				/>
+				<Sidebar bind:sidebar index={data.index} exercise={data.exercise} />
 			</section>
 
 			<section slot="b">
 				<SplitPane type="vertical" min="100px" max="-4.1rem" pos="50%">
-					<section slot="a">
-						<SplitPane
-							id="editor"
-							type={mobile ? 'vertical' : 'horizontal'}
-							min="120px"
-							max="300px"
-							pos="200px"
-						>
-							<section class="editor-container" slot="b">
-								<Editor />
-
-							</section>
-						</SplitPane>
+					<section class="editor-container mx-4" slot="a">
+						<Editor code={data.exercise.code} />
 					</section>
 
 					<section slot="b" class="preview">
 						<!-- <Output exercise={data.exercise} {paused} /> -->
+						Output
 					</section>
 				</SplitPane>
 			</section>

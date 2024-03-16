@@ -1,11 +1,5 @@
 import PrismJS from 'prismjs';
 import { Marked } from 'marked';
-import { escape_html } from '$lib/utils';
-
-const languages = {
-	oxi: 'rust',
-	'':''
-};
 
 const delimiter_substitutes = {
 	'+++': '             ',
@@ -52,37 +46,11 @@ const default_renderer = {
 			})
 			.replace(/\*\\\//g, '*/');
 
-		if (language === 'diff') {
-			const lines = source.split('\n').map((content) => {
-				let type = null;
-				if (/^[\+\-]/.test(content)) {
-					type = content[0] === '+' ? 'inserted' : 'deleted';
-					content = content.slice(1);
-				}
+		const highlighted = PrismJS.highlight(source, PrismJS.languages['rust'], 'rust');
 
-				return {
-					type,
-					content: escape_html(content)
-				};
-			});
-
-			html = `<div class="code-block"><pre class="language-diff"><code>${lines
-				.map((line) => {
-					if (line.type) return `<span class="${line.type}">${line.content}\n</span>`;
-					return line.content + '\n';
-				})
-				.join('')}</code></pre></div>`;
-		} else {
-			const lang = /** @type {keyof languages} */ (language);
-			const plang = languages[lang];
-			const highlighted = plang
-				? PrismJS.highlight(source, PrismJS.languages[plang], language)
-				: escape_html(source);
-
-			html = `<div class="code-block">${
-				options.file ? `<span class="filename">${options.file}</span>` : ''
-			}<pre class='language-${plang}'><code>${highlighted}</code></pre></div>`;
-		}
+		html = `<div class="code-block">${
+			options.file ? `<span class="filename">${options.file}</span>` : ''
+		}<pre class='language-rust'><code>${highlighted}</code></pre></div>`;
 
 		return html
 			.replace(/ {13}([^ ][^]+?) {13}/g, (_, content) => {
