@@ -8,9 +8,16 @@
 	import { basicSetup } from 'codemirror';
 	import { onMount, tick } from 'svelte';
 	import './codemirror.css';
+	import { SplitPane } from '@rich_harris/svelte-split-pane';
 
 	/** @type {HTMLDivElement} */
 	let container;
+
+	/** @type {string} */
+	let output = 'Hello world!';
+
+	/** @type {string} */
+	let version = 'v2.7.0';
 
 	let preserve_editor_focus = false;
 	let skip_reset = true;
@@ -31,7 +38,7 @@
 		basicSetup,
 		EditorState.tabSize.of(2),
 		keymap.of([{ key: 'Tab', run: acceptCompletion }, indentWithTab]),
-		indentUnit.of('\t'),
+		indentUnit.of('\t')
 	];
 
 	onMount(() => {
@@ -71,24 +78,45 @@
 		}
 	}}
 />
+<SplitPane type="vertical" min="100px" max="-4.1rem" pos="50%">
+	<section class="editor-container ml-1" slot="a">
+		<div
+			class="container"
+			bind:this={container}
+			on:focusin={() => {
+				clearTimeout(remove_focus_timeout);
+				preserve_editor_focus = true;
+			}}
+			on:focusout={() => {
+				// Heuristic: user did refocus themmselves if iframe_took_focus
+				// doesn't happen in the next few miliseconds. Needed
+				// because else navigations inside the iframe refocus the editor.
+				remove_focus_timeout = setTimeout(() => {
+					preserve_editor_focus = false;
+				}, 200);
+			}}
+		></div>
+	</section>
 
-<div
-	class="container"
-	bind:this={container}
-	on:focusin={() => {
-		clearTimeout(remove_focus_timeout);
-		preserve_editor_focus = true;
-	}}
-	on:focusout={() => {
-		// Heuristic: user did refocus themmselves if iframe_took_focus
-		// doesn't happen in the next few miliseconds. Needed
-		// because else navigations inside the iframe refocus the editor.
-		remove_focus_timeout = setTimeout(() => {
-			preserve_editor_focus = false;
-		}, 200);
-	}}
->
-</div>
+	<section slot="b" class="preview">
+		Output
+		<div class="editor-container ml-1 container p-6">
+			<button class="btn btn-primary ml-auto"
+				><svg
+					xmlns="http://www.w3.org/2000/svg"
+					viewBox="0 0 24 24"
+					><path
+						fill="currentColor"
+						d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4z"
+					/></svg
+				></button
+			>
+			<span class="text-primary font-bold">oxido ({version})</span>
+			<span class="font-light">$</span>
+			{output}
+		</div>
+	</section>
+</SplitPane>
 
 <style>
 	.container {
@@ -123,5 +151,10 @@
 		.fake * {
 			color: #666;
 		}
+	}
+
+	.editor-container {
+		position: relative;
+		background-color: var(--sk-back-3);
 	}
 </style>

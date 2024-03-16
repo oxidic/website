@@ -70,16 +70,7 @@
 			</section>
 
 			<section slot="b">
-				<SplitPane type="vertical" min="100px" max="-4.1rem" pos="50%">
-					<section class="editor-container mx-4" slot="a">
-						<Editor code={data.exercise.code} />
-					</section>
-
-					<section slot="b" class="preview">
-						<!-- <Output exercise={data.exercise} {paused} /> -->
-						Output
-					</section>
-				</SplitPane>
+				<Editor code={data.exercise.code} />
 			</section>
 		</SplitPane>
 	</div>
@@ -175,12 +166,6 @@
 		display: flex;
 		flex-direction: column;
 	}
-
-	.editor-container {
-		position: relative;
-		background-color: var(--sk-back-3);
-	}
-
 	.mobile .navigator {
 		display: flex;
 		flex-direction: row;
