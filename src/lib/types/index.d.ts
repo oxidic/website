@@ -33,6 +33,7 @@ export interface Exercise {
 	label: string;
 	slug: string;
 	path: string;
+	output: string;
 	code: string;
 	prev: { slug: string } | null;
 	next: { slug: string; title: string } | null;

@@ -70,7 +70,7 @@
 			</section>
 
 			<section slot="b">
-				<Editor code={data.exercise.code} />
+				<Editor code={data.exercise.code} output={data.exercise.output} />
 			</section>
 		</SplitPane>
 	</div>

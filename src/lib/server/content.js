@@ -18,6 +18,7 @@ export async function get_exercise(slug) {
 
 	const text = await readFile(`${dir}/README.md`);
 	const code = await readFile(`${dir}/code.oxi`);
+	const output = await readFile(`${dir}/output.txt`);
 	const meta = JSON.parse(await readFile(`${dir}/meta.json`));
 	const { frontmatter, markdown } = extract_frontmatter(text, dir);
 	const { title, path = '/', focus } = frontmatter;
@@ -31,6 +32,7 @@ export async function get_exercise(slug) {
 		focus: focus ?? meta.focus,
 		next: meta.next,
 		pev: meta.previous,
+		output,
 		code,
 		title,
 		path,

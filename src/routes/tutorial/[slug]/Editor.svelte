@@ -14,10 +14,10 @@
 	let container;
 
 	/** @type {string} */
-	let output = 'Hello world!';
+	export let output;
 
 	/** @type {string} */
-	let version = 'v2.7.0';
+	let version = 'v2.5.0';
 
 	let preserve_editor_focus = false;
 	let skip_reset = true;
